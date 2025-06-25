@@ -17,7 +17,7 @@
 <style scoped>
 .top-bar {
   width: 100%;
-  height: 100px;
+  /* height: 100px; */
   background: #005266;
   display: flex;
   align-items: center;

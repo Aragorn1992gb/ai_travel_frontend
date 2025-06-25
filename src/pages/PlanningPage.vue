@@ -21,21 +21,6 @@
             <div class="step-bar-unactive"></div>
         </div>
       </section>
-      <!-- <section class="details-card">
-        <h3>Your Itineraries</h3>
-        <div class="itinerary-list">
-          <div class="itinerary-card">
-            <div class="card-header">
-              <span class="destination">Rome, Italy</span>
-              <span class="dates">Jul 10 - Jul 15</span>
-            </div>
-            <div class="card-body">
-              <p>3 days, 2 travelers</p>
-              <button class="view-btn">View</button>
-            </div>
-          </div>
-        </div>
-      </section> -->
 
       <section class="planning-row">
       <div class="planning-form">
@@ -53,34 +38,25 @@
             <span class="input-icon">📅</span>
             <input id="days" type="text" placeholder="Number of days" />
           </div>
+         
+        </div>
+        <div class="next-btn-container">        
+          <button class="next-btn">
+            <span class="next-btn-text">Next</span>
+            <span class="next-btn-circle">
+              <svg class="next-btn-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="10" fill="#3CD3AD"/>
+                <path d="M7 10h6M11 7l3 3-3 3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
         </div>
       </div>
       <div class="planning-map">
         <img src="../public/map.png" alt="Map" style="border-radius:24px;" />
       </div>
     </section>
-      <!-- <section class="planning-form">
-      <div class="form">
-        <div class="form-group">
-          <label for="destination"><b>Where do you want to go?</b></label>
-          <div class="input-wrapper">
-            <span class="input-icon">🔍</span>
-            <input id="destination" type="text" placeholder="Search for a destination" />
-            <span class="input-arrow">⌄</span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="days"><b>How many days do you want to stay?</b></label>
-          <div class="input-wrapper">
-            <span class="input-icon">📅</span>
-            <input id="days" type="text" placeholder="Number of days" />
-          </div>
-        </div>
-      </div>
-      <div class="planning-map">
-        <img src="../public/map.png" alt="Map" style="width:100%;border-radius:24px;" />
-      </div>
-    </section> -->
+   
     </main>
   </div>
 </template>
@@ -173,56 +149,19 @@ import TopBar from '../components/TopBar.vue'
   border: 2px solid #1e90ff;
 }
 
-/* .planning-row {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  align-items: flex-start;
-  width: 100%;
-  margin-top: 2rem;
-  order: 2;
-}
-
-.planning-form {
-  flex: 1 1 420px;
-  max-width: 600px;
-  background: #f4fcfb;
-  border-radius: 32px;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.planning-map {
-  flex: 1 1 420px;
-  max-width: 700px;
-  min-width: 320px;
-  display: flex;
-  align-items: flex-start;
-}
-
-.planning-map img {
-  width: 100%;
-  height: auto;
-  border-radius: 24px;
-  display: block;
-} */
-
 .planning-row {
   display: flex;
   flex-direction: row;
-  /* gap: 3vw; */
-  align-items: flex-start;
+  align-items: stretch;
   width: 100%;
   margin-top: 2vw;
   order: 2;
+  background: rgba(60, 211, 173, 0.06);
+  border-radius: 32px;
 }
 
 .planning-form {
   flex: 1 1 0;
-  /* max-width: 40vw; */
-  /* min-width: 25vw; */
   width: 50vw;
   background: #f4fcfb;
   border-radius: 2vw;
@@ -246,20 +185,8 @@ import TopBar from '../components/TopBar.vue'
   height: auto;
   border-radius: 2vw;
   display: block;
-  margin: 0 auto;
+  margin: 0 auto 24px auto;
 }
-
-/* .planning-form {
-  background: #f4fcfb;
-  border-radius: 32px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  max-width: 50vw;
-  order: 2;
-} */
 
 .form-group {
   display: flex;
@@ -296,18 +223,9 @@ input[type="text"] {
   background: transparent;
 }
 
-.planning-map {
-  display: inline-block;
-  vertical-align: top;
-  /* margin-left: 2rem; */
-  width: 40vw;
-  /* Adjust width as needed */
-}
 
 
 .steps {
-  /* Frame 1618872686 */
-
   /* Auto layout */
   display: flex;
   flex-direction: row;
@@ -329,32 +247,11 @@ input[type="text"] {
   display: flex;
   flex-direction: row;
   align-items: center;
-  /* Remove width: 45vw; */
   width: 100%;
   gap: 16px;
   margin: 0 auto;
 }
-/* .step {
 
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0px;
-  gap: 16px;
-
-  margin: 0 auto;
-
-
-  width: 45vw;
-  height: 100%;
-
-
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-
-} */
 
 .step-circle {
   display: flex;
@@ -436,116 +333,52 @@ input[type="text"] {
   flex: none;
   order: 1;
   flex-grow: 1;
-
-
 }
 
-/* .step-circle {
-  
-  box-sizing: border-box;
-
-
+.next-btn-container {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  justify-content: flex-end;
+  width: 130px;
+  margin-left: auto;
+  margin-top: auto;
+}
+
+.next-btn {
+  display: flex;
   align-items: center;
-  padding: 12px 20px;
-  gap: 10px;
-
-  width: 72px;
-  height: 34px;
-
-  background: #FFFFFF;
-  border: 1px solid rgba(0, 82, 102, 0.4);
-  border-radius: 200px;
-
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-
-
- }  */
-.details-card {
-  /* Frame 4 */
-
-  /* Auto layout */
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 32px;
-  gap: 20px;
-  isolation: isolate;
-
-  /* width: 1380px;
-  height: 780px; */
-  width: 100%;
-  height: 100%;
-
-  background: rgba(60, 211, 173, 0.06);
-  border-radius: 32px;
-
-  /* Inside auto layout */
-  flex: none;
-  order: 2;
-  flex-grow: 0;
-
-}
-
-
-/* .new-itinerary {
-  font-size: 1.3rem;
-  margin-top: 1rem;
-  color: #222;
-}
-.itineraries h3 {
-  font-size: 1.3rem;
-  margin-bottom: 1rem;
-  color: #222;
-}
-.itinerary-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  padding: 2rem;
-}
-.itinerary-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(30,144,255,0.06);
-  padding: 1.5rem;
-  min-width: 260px;
-  max-width: 320px;
-  flex: 1 1 260px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-} */
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 600;
-  color: #1e90ff;
-}
-.card-body {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.view-btn {
-  background: #1e90ff;
+  gap: 0.7em;
+  background: #003344;
+  border: 1.5px solid #3CD3AD;
+  border-radius: 2em;
+  padding: 0.7em 1.5em 0.7em 1.5em;
   color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1.2rem;
+  font-family: 'Segoe UI', 'Inter', sans-serif;
   font-weight: 600;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, border 0.2s;
+  outline: none;
 }
-.view-btn:hover {
-  background: #156fd1;
+
+.next-btn:hover {
+  background: #005266;
+  border-color: #2bbf98;
 }
+
+.next-btn-text {
+  margin-right: 0.5em;
+}
+
+.next-btn-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.next-btn-arrow {
+  display: block;
+}
+
 @media (max-width: 900px) {
   .dashboard {
     flex-direction: column;
@@ -567,38 +400,6 @@ input[type="text"] {
     gap: 1rem;
     padding: 2rem;
   }
-
-   /* .steps {
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    padding: 0 8px;
-    width: 100%;
-    height: auto;
-  }
-  .step {
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
-    width: 100vw;
-    margin: 0;
-  }
-  .step-circle {
-    font-size: 0.95rem;
-    padding: 0.3em 0.9em;
-    width: 10;
-    flex-shrink: 0;   
-  }
-  .step-title {
-    font-size: 1.1rem;
-    width: auto;
-    height: auto;
-    margin: 0;
-    width: 90vw;
-    flex: 1;      
-    text-align: center; 
-  } */
   
   .steps {
     display: flex;
@@ -636,5 +437,12 @@ input[type="text"] {
   .steps-bar {
     display: none;
   }
+  .planning-map {
+    display: none;
+  }
+  .planning-row {
+    min-height: calc(100vh - 135px); /* Replace 80px with your header's height */
+  }
+
 }
 </style>
