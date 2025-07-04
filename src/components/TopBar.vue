@@ -17,6 +17,7 @@
 <style scoped>
 .top-bar {
   width: 100%;
+  height: 52px;
   /* height: 100px; */
   background: #005266;
   display: flex;
@@ -26,6 +27,10 @@
   border-bottom-right-radius: 32px;
   padding: 0 2rem;
   box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 .logo-area {
   display: flex;

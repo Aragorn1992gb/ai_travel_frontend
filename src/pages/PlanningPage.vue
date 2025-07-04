@@ -129,6 +129,8 @@ import TopBar from '../components/TopBar.vue'
   /* padding: 2rem 3vw; */
   display: flex;
   flex-direction: column;
+  padding-top: 52px; /* Same as .top-bar height */
+
 }
 .topbar {
   display: flex;
