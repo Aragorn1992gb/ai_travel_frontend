@@ -132,12 +132,12 @@ import TopBar from '../components/TopBar.vue'
   padding-top: 52px; /* Same as .top-bar height */
 
 }
-.topbar {
+/* .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-}
+} */
 .user-info {
   display: flex;
   align-items: center;
@@ -393,9 +393,6 @@ input[type="text"] {
     /* padding: 1rem; */
     gap: 1rem;
     justify-content: space-between;
-  }
-  .main-content {
-    /* padding: 1rem; */
   }
   .itinerary-list {
     flex-direction: column;
