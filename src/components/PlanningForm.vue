@@ -5,34 +5,81 @@
       
       <section class="steps">
         <div class="step">
-          <div class="step-circle">STEP 1</div>
-          <div class="step-title">Choose destination</div>
+          <div class="step-circle">{{ stepLabel }}</div>
+          <div class="step-title">{{ stepTitle }}</div>
         </div>
         <div class="steps-bar">
-          <div class="step-bar-active"></div>
-          <div class="step-bar-unactive"></div>
-          <div class="step-bar-unactive"></div>
-          <div class="step-bar-unactive"></div>
+          <div 
+            v-for="(step, index) in totalSteps" 
+            :key="index"
+            :class="index < currentStep ? 'step-bar-active' : 'step-bar-unactive'"
+          ></div>
         </div>
       </section>
 
       <section class="planning-row">
         <div class="planning-form">
-          <div v-for="(field, index) in fields" :key="index" class="form-group">
-            <label :for="field.id"><b>{{ field.label }}</b></label>
-            <div class="input-wrapper">
-              <span class="input-icon">{{ field.icon }}</span>
-              <input 
-                :id="field.id" 
-                :type="field.type || 'text'" 
-                :placeholder="field.placeholder" 
-                v-model="field.value"
-              />
-              <span v-if="field.hasArrow" class="input-arrow">⌄</span>
+      <div v-for="(field, index) in fields" :key="index" class="form-group">
+        <!-- Ratings field type (multiple ratings in one group) -->
+        <div v-if="field.type === 'ratings'" class="ratings-group">
+          <h3 class="ratings-title">{{ field.label }}</h3>
+          <div v-for="rating in field.ratings" :key="rating.id" class="rating-field">
+            <label class="rating-label">{{ rating.label }}</label>
+            <div class="rating-stars">
+              <span 
+                v-for="star in 5" 
+                :key="star"
+                @click="updateRatingInGroup(field, rating, star)"
+                :class="['star', { active: star <= rating.value }]"
+              >
+                ⭐
+              </span>
             </div>
           </div>
-          
-          <div class="next-btn-container">        
+        </div>
+        
+        <!-- Single rating field type -->
+        <div v-else-if="field.type === 'rating'" class="rating-field">
+          <label class="rating-label">{{ field.label }}</label>
+          <div class="rating-stars">
+            <span 
+              v-for="star in (field.maxRating || 5)" 
+              :key="star"
+              @click="updateRating(field, star)"
+              :class="['star', { active: star <= parseInt(field.value || '0') }]"
+            >
+              ⭐
+            </span>
+          </div>
+        </div>
+        
+        <!-- Regular input field type -->
+        <div v-else>
+          <label :for="field.id"><b>{{ field.label }}</b></label>
+          <div class="input-wrapper">
+            <span class="input-icon">{{ field.icon }}</span>
+            <input 
+              :id="field.id" 
+              :type="field.type || 'text'" 
+              :placeholder="field.placeholder" 
+              v-model="field.value"
+            />
+            <span v-if="field.hasArrow" class="input-arrow">⌄</span>
+          </div>
+        </div>
+      </div>
+      <div class="next-btn-container">
+        <router-link :to="nextPageUrl" class="next-btn">
+          <span class="next-btn-text">Next</span>
+          <span class="next-btn-circle">
+            <svg class="next-btn-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="10" fill="#3CD3AD"/>
+              <path d="M7 10h6M11 7l3 3-3 3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </router-link>
+        </div>
+          <!-- <div class="next-btn-container">        
             <button class="next-btn" @click="$emit('next', getFormData())">
               <span class="next-btn-text">{{ buttonText }}</span>
               <span class="next-btn-circle">
@@ -42,7 +89,7 @@
                 </svg>
               </span>
             </button>
-          </div>
+          </div> -->
         </div>
         
         <div class="planning-map">
@@ -56,16 +103,24 @@
 <script setup lang="ts">
 import '../assets/global.css'
 import TopBar from './TopBar.vue'
-import { ref, defineProps, defineEmits } from 'vue'
+import { defineProps, defineEmits } from 'vue'
+
+interface RatingItem {
+  id: string
+  label: string
+  value: number
+}
 
 interface FormField {
   id: string
   label: string
-  placeholder: string
-  icon: string
+  placeholder?: string
+  icon?: string
   hasArrow?: boolean
   type?: string
   value?: string
+  maxRating?: number
+  ratings?: RatingItem[]
 }
 
 interface Props {
@@ -73,16 +128,39 @@ interface Props {
   mapImage: string
   mapAlt?: string
   buttonText?: string
+  currentStep?: number      // Which step is currently active (1-based)
+  totalSteps?: number       // Total number of steps
+  stepLabel?: string        // "STEP 1", "STEP 2", etc.
+  stepTitle?: string        // "Choose destination", "Select dates", etc.
+  nextPageUrl?: string      // URL for the next page navigation
 }
 
 const props = withDefaults(defineProps<Props>(), {
   mapAlt: 'Map',
-  buttonText: 'Next'
+  buttonText: 'Next',
+  currentStep: 1,
+  totalSteps: 4,
+  stepLabel: 'STEP 1',
+  stepTitle: 'Choose destination',
+  nextPageUrl: '/dashboard'
 })
 
 const emit = defineEmits<{
   next: [data: Record<string, string>]
 }>()
+
+const updateRating = (field: FormField, rating: number) => {
+  field.value = rating.toString()
+}
+
+const updateRatingInGroup = (field: FormField, ratingItem: RatingItem, rating: number) => {
+  if (field.ratings) {
+    const item = field.ratings.find(r => r.id === ratingItem.id)
+    if (item) {
+      item.value = rating
+    }
+  }
+}
 
 const getFormData = () => {
   const data: Record<string, string> = {}
@@ -96,11 +174,12 @@ const getFormData = () => {
 <style scoped>
 .planning-page {
   font-family: 'Inter', sans-serif;
-  /* display: flex; */
   min-height: 100vh;
   background: #f8fafc;
   width: 100vw;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .logo {
@@ -128,10 +207,12 @@ const getFormData = () => {
   flex-direction: row;
   align-items: stretch;
   width: 100%;
-  margin-top: 2vw;
+  margin-top: 1vw;
   order: 2;
   background: rgba(60, 211, 173, 0.06);
   border-radius: 32px;
+  flex: 1;
+  /* min-height: calc(100vh - 150px); */
 }
 
 .planning-form {
@@ -139,10 +220,13 @@ const getFormData = () => {
   width: 50vw;
   background: #f4fcfb;
   border-radius: 2vw;
-  padding: 2vw;
+  /* padding: 1.5vw; */
   display: flex;
   flex-direction: column;
-  gap: 2vw;
+  gap: 0.5vw;
+  margin: 15px;
+  padding-top: 30px;
+  /* min-height: calc(100vh - 200px); */
 }
 
 .planning-map {
@@ -165,7 +249,8 @@ const getFormData = () => {
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.3rem;
+  margin: 25px;
 }
 
 .input-wrapper {
@@ -195,6 +280,56 @@ input[type="text"] {
   flex: 1;
   font-size: 1.1rem;
   background: transparent;
+}
+
+.rating-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 82, 102, 0.1);
+}
+
+.ratings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ratings-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid rgba(0, 82, 102, 0.2);
+}
+
+.rating-label {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #222;
+  flex: 1;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.star {
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  filter: grayscale(100%);
+}
+
+.star.active {
+  filter: grayscale(0%);
+}
+
+.star:hover {
+  transform: scale(1.1);
 }
 
 
@@ -331,11 +466,14 @@ input[type="text"] {
   cursor: pointer;
   transition: background 0.2s, border 0.2s;
   outline: none;
+  text-decoration: none; 
+  margin: 25px;
 }
 
 .next-btn:hover {
   background: #005266;
   border-color: #2bbf98;
+  color: #fff;
 }
 
 .next-btn-text {
@@ -353,18 +491,66 @@ input[type="text"] {
 }
 
 @media (max-width: 900px) {
-  .planning-row {
+  .dashboard {
     flex-direction: column;
-    min-height: calc(100vh - 135px);
   }
-  
-  .planning-form {
+  .sidebar {
+    flex-direction: row;
     width: 100%;
-    max-width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+  .itinerary-list {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
   }
   
+  .steps {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; /* Center the .step horizontally */
+    width: 100%;
+    padding: 0 8px;
+    gap: 0;
+  }
+  .step {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;   /* Fill the .steps container */
+    margin: 0;
+    gap: 0;
+    position: relative;
+  }
+  .step-circle {
+    flex-shrink: 0;
+    padding: 0.3em 0.9em;
+    font-size: 0.95rem;
+  }
+  .step-title {
+    flex: 1;
+    text-align: center;
+    font-size: 1.1rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: max-content;
+  }
+  .steps-bar {
+    display: none;
+  }
   .planning-map {
     display: none;
   }
+  .planning-row {
+    min-height: calc(100vh - 135px); /* Replace 80px with your header's height */
+  }
+
 }
+
 </style>
