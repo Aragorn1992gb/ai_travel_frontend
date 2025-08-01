@@ -46,6 +46,7 @@
 </template>
 
 <script setup lang="ts">
+import '../assets/global.css'
 import TopBar from '../components/TopBar.vue'
 
 // Add logic as needed
@@ -108,31 +109,31 @@ import TopBar from '../components/TopBar.vue'
 .logout-btn:hover {
   background: #ffeaea;
 }
-.main-content {
+/* .main-content {
   flex: 1;
-  /* padding: 2rem 3vw; */
+  /* padding: 2rem 3vw; 
   display: flex;
   flex-direction: column;
-  padding-top: 52px; /* Same as .top-bar height */
-}
+  padding-top: 52px; /* Same as .top-bar height 
+} */
 /* .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
 } */
-.user-info {
+/* .user-info {
   display: flex;
   align-items: center;
   gap: 1rem;
-}
-.avatar {
+} */
+/* .avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #1e90ff;
-}
+} */
 .new-itinerary {
   font-size: 1.3rem;
   margin-top: 1rem;

@@ -1,0 +1,40 @@
+<template>
+  <PlanningForm 
+    :fields="formFields" 
+    map-image="src/public/map.png"
+    button-text="Next"
+    @next="handleNext"
+  />
+</template>
+
+<script setup lang="ts">
+import PlanningForm from '../components/PlanningForm.vue'
+
+const formFields = [
+  {
+    id: 'destination',
+    label: 'Where do you want to go?',
+    placeholder: 'Search for a destination',
+    icon: '🔍',
+    hasArrow: true
+  },
+  {
+    id: 'days',
+    label: 'How many days do you want to stay?',
+    placeholder: 'Number of days',
+    icon: '📅'
+  },
+  // Add more fields as needed
+  {
+    id: 'budget',
+    label: 'What is your budget?',
+    placeholder: 'Enter budget',
+    icon: '💰'
+  }
+]
+
+const handleNext = (formData: Record<string, string>) => {
+  console.log('Form data:', formData)
+  // Handle form submission
+}
+</script>
